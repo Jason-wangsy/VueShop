@@ -9,8 +9,9 @@ Vue.use(VueRouter)
 import VueResource from 'vue-resource'
 // 2.2 安装 vue-resource
 Vue.use(VueResource)
-
-
+Vue.http.options.emulateJSON = true
+import VuePreview from 'vue2-preview'
+Vue.use(VuePreview)
 // 导入 MUI 的样式
 import './lib/mui/css/mui.min.css'
 // 导入扩展图标样式
@@ -19,13 +20,14 @@ import './lib/mui/css/icons-extra.css'
 
 // 按需导入 Mint-UI 中的组件   
 import MintUI from 'mint-ui'
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
+// import { Header, Swipe, SwipeItem, Button, Lazyload  } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(MintUI)
-Vue.component(Header.name, Header)
-Vue.component(Swipe.name, Swipe)
-Vue.component(SwipeItem.name, SwipeItem)
-Vue.component(Button.name, Button)
+// Vue.use(Lazyload);
+// Vue.component(Header.name, Header)
+// Vue.component(Swipe.name, Swipe)
+// Vue.component(SwipeItem.name, SwipeItem)
+// Vue.component(Button.name, Button)
 
 
 // 1.3 导入自己的 router.js 路由模块

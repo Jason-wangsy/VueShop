@@ -2,8 +2,8 @@
     <div class="comment-container">
         <h3>发表评论</h3>
         <hr>
-        <textarea placeholder="请输入评论内容" maxlength="120"></textarea>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <textarea placeholder="请输入评论内容" maxlength="120" v-model="msg"></textarea>
+        <mt-button type="primary" size="large" @click="postContent">发表评论</mt-button>
         
         <div class="newsInfoList">
             <div class="newsInfoItem" v-for="(item, index) in commentList" :key="index">
@@ -21,12 +21,17 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
     data(){
         return {
             pageIndex: 1,
-            commentList:[]
+            commentList:[],
+            msg:""
         }
+    },
+    headers:{
+        'Content-Type':'application/json'
     },
     created(){
         this.getCommentList()
@@ -34,19 +39,25 @@ export default {
     methods:{
         getCommentList(){
             this.$http.get('../../../static/commentData.json').then(result=>{
-                // var arry = []
                 for(var item in result.body.message){
                     if(result.body.message[item].id == this.newsId && result.body.message[item].pageIndex == this.pageIndex){
-                        //  arry.push(result.body.message[item]) 
                         this.commentList = this.commentList.concat(result.body.message[item])
                     }
                 }
-                // this.commentList = arry
             })
         },
         getMore(){
             this.pageIndex++
             this.getCommentList()
+        },
+        postContent(){
+            if(this.msg.trim().length === 0){
+                return Toast("评论内容不能为空")
+            }
+
+            var obj = {add_time: Date.now(),content:this.msg}
+            this.commentList.unshift(obj)
+            this.msg = ""
         }
     },
     props:["newsId"]
